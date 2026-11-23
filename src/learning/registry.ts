@@ -10,6 +10,8 @@ import { colorBucket } from './activities/color-bucket';
 import { sortColor } from './activities/sort-color';
 import { shapeFind } from './activities/shape-find';
 import { shapeShadow } from './activities/shape-shadow';
+import { countObjects } from './activities/count-objects';
+import { numberTap } from './activities/number-tap';
 
 export const activities: ActivityDef[] = [
   // ── Colores ──
@@ -19,7 +21,8 @@ export const activities: ActivityDef[] = [
   shapeFind,
   shapeShadow,
   // ── Números ──
-  // count-objects, number-tap → aquí
+  countObjects,
+  numberTap,
   // ── Memoria ──
   memoryPairs,
   // ── Patrones ──

@@ -1,0 +1,6 @@
+/* count-objects: objetos táctiles para contar */
+.co-round { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: center; max-width: 900px; }
+.co-round .lk-choice { padding: 6px; border-radius: 24px; }
+.co-round .lk-done .lk-art { animation: co-pop 0.35s ease-out both; }
+@keyframes co-pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .co-round .lk-done .lk-art { animation: none; } }
