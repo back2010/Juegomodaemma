@@ -1,0 +1,3 @@
+{ "name": "Mi Estudio de Moda y Aventuras", "short_name": "Moda Emma", "display": "standalone",
+  "orientation": "landscape", "background_color": "#ffe3f3", "theme_color": "#ff3fa4", "start_url": "/",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }] }

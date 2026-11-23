@@ -1,0 +1,26 @@
+/** Capturas del flujo básico en viewport iPad. Uso: node scripts/shots.mjs http://localhost:4173 carpeta */
+import { chromium } from 'playwright';
+const [, , url = 'http://localhost:4173', out = '.'] = process.argv;
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1180, height: 820 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' });
+const errors = [];
+p.on('pageerror', (e) => errors.push(e.message));
+p.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+await p.goto(url);
+await p.tap('[data-testid=start]');
+await p.waitForTimeout(400);
+await p.screenshot({ path: `${out}/1-home.png` });
+await p.tap('[data-testid^=doll-]');
+await p.waitForTimeout(500);
+await p.screenshot({ path: `${out}/2-salon-ropa.png` });
+await p.tap('[data-testid=tab-makeup]');
+await p.waitForTimeout(300);
+await p.tap('[data-testid=tile-lips-classic]');
+await p.tap('[data-testid=tab-hair]');
+await p.waitForTimeout(300);
+await p.tap('[data-testid=swatch-arcoiris]');
+await p.tap('[data-testid=tab-accessories]');
+await p.waitForTimeout(300);
+await p.screenshot({ path: `${out}/3-salon-acc.png` });
+console.log('errors:', errors);
+await b.close();
