@@ -1,0 +1,20 @@
+/* color-bucket: baldes y objetos arrastrables. Prefijo cb-. */
+.cb-round { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; max-width: 900px; }
+.cb-buckets { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+.cb-bucket {
+  position: relative; width: clamp(104px, 30vw, 210px); aspect-ratio: 10 / 11;
+  border: none; background: transparent; padding: 0;
+}
+.cb-bucket-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cb-bucket.lk-hint .cb-bucket-art { animation: cb-pulse 1s ease-in-out infinite; }
+.cb-placed {
+  position: absolute; top: 10%; left: 10%; right: 10%; height: 50%;
+  display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 4px;
+}
+.cb-placed-item { width: 44%; aspect-ratio: 1; }
+.cb-placed-item svg { width: 100%; height: 100%; }
+.cb-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; min-height: 150px; }
+.cb-tray .lk-drag { width: clamp(120px, 26vw, 150px); aspect-ratio: 1; }
+.cb-tray .lk-drag svg { width: 100%; height: 100%; }
+@keyframes cb-pulse { 50% { transform: scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { .cb-bucket.lk-hint .cb-bucket-art { animation: none; } }

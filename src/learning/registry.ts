@@ -6,11 +6,13 @@
 import type { ActivityDef, LearningCategory } from '@/types';
 import { colorFind } from './activities/color-find';
 import { memoryPairs } from './activities/memory-pairs';
+import { colorBucket } from './activities/color-bucket';
+import { sortColor } from './activities/sort-color';
 
 export const activities: ActivityDef[] = [
   // ── Colores ──
   colorFind,
-  // color-bucket → aquí
+  colorBucket,
   // ── Figuras ──
   // shape-find, shape-shadow → aquí
   // ── Números ──
@@ -20,7 +22,8 @@ export const activities: ActivityDef[] = [
   // ── Patrones ──
   // pattern-next → aquí
   // ── Clasificación ──
-  // sort-color, sort-shape, sort-category → aquí
+  sortColor,
+  // sort-shape, sort-category → aquí
 ];
 export const getActivity = (id: string) => activities.find((a) => a.id === id);
 export const activitiesOf = (c: LearningCategory) => activities.filter((a) => a.category === c);
