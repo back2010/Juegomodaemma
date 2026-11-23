@@ -10,6 +10,12 @@ vi.mock('@/audio', async () => (await import('./audioMock')).audioMock());
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
+/** Con varias actividades por categoría, fuerza que 'color-find' sea la menos reciente. */
+function preferColorFind() {
+  for (const a of activities) if (a.category === 'colores' && a.id !== 'color-find')
+    useLearning.getState().setProgress(a.id, { level: 1, streak: 0, struggle: 0, plays: 1, lastPlayed: Date.now() });
+}
+
 describe('LearningHub', () => {
   it('pausa el scheduler mientras está abierto y reanuda al salir', () => {
     const pause = vi.spyOn(schedulerApi, 'pause');
@@ -29,6 +35,7 @@ describe('LearningHub', () => {
       fireEvent.click(numeros);
       expect(screen.queryByTestId('activity-session')).toBeNull();
     }
+    preferColorFind();
     fireEvent.click(screen.getByTestId('learn-cat-colores'));
     expect(screen.getByTestId('activity-session').dataset.activity).toBe('color-find');
     expect(screen.getByTestId('activity-exit')).toBeTruthy();
@@ -40,6 +47,7 @@ describe('LearningHub', () => {
     vi.useFakeTimers();
     useLearning.getState().resetProgress();
     const done = vi.spyOn(schedulerApi, 'activityCompleted');
+    preferColorFind();
     render(<LearningHub />);
     fireEvent.click(screen.getByTestId('learn-cat-colores'));
     act(() => { vi.advanceTimersByTime(5 * 60_000); }); // se acabó el tiempo: termina con esta ronda

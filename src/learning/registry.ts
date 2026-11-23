@@ -8,13 +8,16 @@ import { colorFind } from './activities/color-find';
 import { memoryPairs } from './activities/memory-pairs';
 import { colorBucket } from './activities/color-bucket';
 import { sortColor } from './activities/sort-color';
+import { shapeFind } from './activities/shape-find';
+import { shapeShadow } from './activities/shape-shadow';
 
 export const activities: ActivityDef[] = [
   // ── Colores ──
   colorFind,
   colorBucket,
   // ── Figuras ──
-  // shape-find, shape-shadow → aquí
+  shapeFind,
+  shapeShadow,
   // ── Números ──
   // count-objects, number-tap → aquí
   // ── Memoria ──
