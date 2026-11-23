@@ -1,0 +1,2 @@
+.sticker-layer svg { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.sticker-studio .tile { touch-action: pan-y; }
