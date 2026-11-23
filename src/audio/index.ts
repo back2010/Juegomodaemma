@@ -33,3 +33,11 @@ export const voice: VoiceApi & { unlock(): void } = {
 };
 
 export const sfx: SfxApi = { play(_n: SfxName) {} };
+
+/** Voces en español disponibles (para la zona de adultos). */
+export function listVoices(): SpeechSynthesisVoice[] {
+  if (typeof speechSynthesis === 'undefined') return [];
+  return speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith('es'));
+}
+/** Reproduce una frase de prueba con la configuración actual. */
+export function testVoice() { definePhrases({ 'audio.test': ['¡Hola! Así sueno yo'] }); void voice.say('audio.test'); }
