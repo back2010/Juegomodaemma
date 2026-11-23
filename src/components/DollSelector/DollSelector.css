@@ -1,10 +1,84 @@
-.doll-selector { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 0 20px 20px; }
-.doll-row { display: flex; gap: 18px; overflow-x: auto; max-width: 100%; padding: 12px; scroll-snap-type: x mandatory; }
+.doll-selector {
+  height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px; padding: 0 16px 16px; min-height: 0;
+}
+.doll-row {
+  display: flex; gap: 14px; overflow-x: auto; overflow-y: visible; max-width: 100%;
+  padding: 24px 12px 26px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.doll-row::-webkit-scrollbar { display: none; }
+
 .doll-card {
-  flex: none; width: 190px; height: 330px; border-radius: var(--radius); scroll-snap-align: center;
-  background: radial-gradient(circle at 50% 30%, #fff, #ffe3f3 70%); border: 5px solid #fff; box-shadow: var(--shadow);
-  transition: transform 0.2s var(--ease-bounce); padding: 8px;
+  position: relative; flex: none; scroll-snap-align: center; cursor: pointer;
+  width: clamp(150px, calc((100vw - 140px) / 6), 190px);
+  height: clamp(300px, calc(100vh - 330px), 440px);
+  border-radius: var(--radius); padding: 6px; overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(170deg, var(--card-a), var(--card-b));
+  border: 5px solid #fff; box-shadow: var(--shadow);
+  transition: transform 0.25s var(--ease-bounce), opacity 0.3s, filter 0.3s, box-shadow 0.25s;
+  -webkit-tap-highlight-color: transparent;
 }
 .doll-card:active { transform: scale(0.94); }
-.doll-card svg { width: 100%; height: 100%; }
+
+.doll-card-doll {
+  position: absolute; inset: 6px 4px 0; display: block;
+  animation: doll-float 3.2s ease-in-out infinite; animation-delay: var(--float-delay, 0s);
+  transform-origin: 50% 100%;
+}
+.doll-card-doll svg { width: 100%; height: 100%; display: block; }
+
+.doll-card-floor {
+  position: absolute; left: 14%; right: 14%; bottom: 10px; height: 18px; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(150, 60, 150, 0.28), rgba(150, 60, 150, 0) 70%);
+}
+.doll-card-glow {
+  position: absolute; inset: -30%; opacity: 0; pointer-events: none;
+  background: conic-gradient(from 0deg, #ff8ac6, #ffd23f, #22d3c5, #9b4dff, #ff8ac6);
+  filter: blur(24px);
+}
+
+.doll-card-spark {
+  position: absolute; width: 18px; height: 18px; pointer-events: none;
+  background: #fff; opacity: 0.25;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+.doll-card-spark.s1 { top: 14px; left: 14px; }
+.doll-card-spark.s2 { top: 34%; right: 12px; width: 13px; height: 13px; animation-delay: 0.8s; }
+.doll-card-spark.s3 { bottom: 24%; left: 10px; width: 11px; height: 11px; animation-delay: 1.5s; }
+
+/* Al elegir: la elegida brinca y brilla; las demás se apagan. */
+.doll-row.has-chosen .doll-card:not(.chosen) { opacity: 0.45; filter: saturate(0.6); transform: scale(0.92); }
+.doll-card.chosen {
+  z-index: 2; border-color: #ffd23f;
+  box-shadow: 0 0 0 6px rgba(255, 210, 63, 0.55), var(--shadow);
+  animation: card-chosen 0.7s var(--ease-bounce) both;
+}
+.doll-card.chosen .doll-card-glow { opacity: 0.55; animation: glow-spin 1.6s linear infinite; }
+.doll-card.chosen .doll-card-doll { animation: doll-hop 0.7s var(--ease-bounce) 2; }
+.doll-card.chosen .doll-card-spark { opacity: 1; animation-duration: 0.6s; }
+
 .home-actions { display: flex; gap: 40px; }
+
+@keyframes doll-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes doll-hop {
+  0% { transform: translateY(0) scale(1, 1); }
+  25% { transform: translateY(2px) scale(1.06, 0.94); }
+  55% { transform: translateY(-26px) scale(0.97, 1.04); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+@keyframes card-chosen {
+  0% { transform: scale(1) rotate(0); }
+  40% { transform: scale(1.12) rotate(-3deg); }
+  70% { transform: scale(1.06) rotate(2deg); }
+  100% { transform: scale(1.08) rotate(0); }
+}
+@keyframes glow-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .doll-card-doll, .doll-card-spark, .doll-card.chosen, .doll-card.chosen .doll-card-doll,
+  .doll-card.chosen .doll-card-glow { animation: none; }
+}

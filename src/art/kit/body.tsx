@@ -37,7 +37,7 @@ function SkinCyl({ id, p }: { id: string; p: PartProps['palette'] }) {
     <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stopColor={p.shade} />
       <stop offset="0.28" stopColor={p.main} />
-      <stop offset="0.5" stopColor={p.light} />
+      <stop offset="0.5" stopColor={shift(p.main, 0.06)} />
       <stop offset="0.72" stopColor={p.main} />
       <stop offset="1" stopColor={p.shade} />
     </linearGradient>
