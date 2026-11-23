@@ -1,0 +1,13 @@
+/* Estilos de actividades de referencia */
+.cf-round { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: center; max-width: 900px; }
+.mp-round { display: grid; gap: 18px; justify-content: center; }
+.mp-round .lk-choice { padding: 6px; border-radius: 24px; }
+.mp-card { width: 100%; height: 100%; display: grid; place-items: center; }
+.mp-card.up { animation: mp-flip 0.3s ease-out both; }
+@keyframes mp-flip { from { transform: rotateY(90deg); } to { transform: rotateY(0); } }
+
+.act-icon { width: 100%; height: 100%; display: grid; place-items: center; position: relative; }
+.act-icon svg { width: 100%; height: 100%; }
+.act-icon-trio { grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.act-icon-duo { grid-template-columns: 1fr 1fr; gap: 4px; }
+.act-icon-card { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 14px; border: 3px solid #c9a1ff; }

@@ -1,0 +1,51 @@
+/* ---- Kit educativo (P5) ---- */
+.lk-session {
+  position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding: 12px 20px 20px;
+  background: linear-gradient(160deg, #fff6fb, #f1e8ff 55%, #e3fbff); z-index: 5; overflow: hidden;
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+}
+.lk-session-bar { display: flex; align-items: center; gap: 16px; min-height: 120px; }
+.lk-bar-spacer { width: 72px; }
+.lk-trail { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.lk-ministar { width: 44px; height: 44px; }
+.lk-stage { flex: 1; min-height: 0; display: grid; place-items: center; position: relative; }
+.lk-stage.locked { pointer-events: none; }
+
+.lk-art { display: block; width: 100%; height: 100%; }
+
+.lk-choice {
+  border-radius: 32px; padding: 12px; display: grid; place-items: center; touch-action: manipulation;
+  background: linear-gradient(180deg, #fff, #fff0f8); border: 5px solid #fff; box-shadow: var(--shadow);
+  transition: transform 0.18s var(--ease-bounce), opacity 0.3s;
+}
+.lk-choice:active { transform: scale(0.92); }
+.lk-choice.lk-done { transform: scale(1.08); box-shadow: 0 0 0 8px #3ddc84, var(--shadow); }
+.lk-choice:disabled { opacity: 0.5; }
+
+@keyframes lk-heartbeat {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.9), var(--shadow); }
+  30% { transform: scale(1.14); box-shadow: 0 0 0 16px rgba(255, 210, 63, 0.55), var(--shadow); }
+  60% { transform: scale(1.02); box-shadow: 0 0 0 26px rgba(255, 210, 63, 0), var(--shadow); }
+}
+.lk-hint { animation: lk-heartbeat 0.9s ease-in-out infinite; position: relative; z-index: 2; }
+@media (prefers-reduced-motion: reduce) {
+  .lk-hint { animation: none !important; box-shadow: 0 0 0 12px #ffd23f, var(--shadow) !important; }
+}
+
+.lk-drop { border-radius: 28px; border: 5px dashed rgba(155, 77, 255, 0.5); background: rgba(255, 255, 255, 0.6); }
+.lk-drag { touch-action: none; cursor: grab; transition: transform 0.25s var(--ease-bounce); }
+.lk-drag.dragging { cursor: grabbing; filter: drop-shadow(0 10px 10px rgba(80, 20, 90, 0.3)); }
+
+/* Celebración */
+.lk-celebration { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 10; }
+.lk-cel-star { width: min(40vmin, 260px); height: min(40vmin, 260px); animation: lk-jump 0.9s var(--ease-bounce) both; }
+.lk-celebration.big .lk-cel-star { width: min(60vmin, 400px); height: min(60vmin, 400px); animation: lk-jump 1s var(--ease-bounce) both, float 2.4s 1s ease-in-out infinite; }
+.lk-cel-orbit { position: absolute; width: 90px; height: 90px; animation: lk-orbit 2.2s ease-out both; }
+@keyframes lk-jump { 0% { transform: scale(0.2) rotate(-30deg); opacity: 0; } 60% { transform: scale(1.12) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+@keyframes lk-orbit {
+  from { transform: rotate(var(--a)) translateX(0) scale(0.3); opacity: 0; }
+  to { transform: rotate(calc(var(--a) + 120deg)) translateX(min(34vmin, 260px)) scale(1); opacity: 1; }
+}
+.lk-confetti { position: absolute; inset: 0; overflow: hidden; }
+.lk-confetti svg { position: absolute; top: -50px; width: 40px; height: 40px; animation: lk-fall 1.3s ease-in both; }
+@keyframes lk-fall { from { transform: translateY(0); opacity: 1; } to { transform: translateY(110vh); opacity: 0.9; } }
