@@ -1,38 +1,53 @@
 /**
- * Fachada de audio. STUB de la etapa 0 (P6 la reemplaza por VoiceManager + SoundEffects reales).
- * Contrato estable: `voice` (VoiceApi + unlock), `sfx` (SfxApi), `definePhrases`.
+ * Fachada de audio (P6). Contrato estable: `voice` (VoiceApi + unlock), `sfx`, `definePhrases`,
+ * `phraseText`, `listVoices`, `testVoice`.
  */
-import type { PhraseBook, Priority, SfxApi, SfxName, VoiceApi } from '@/types';
-import { getSettings } from '@/store/settingsStore';
+import type { PhraseBook, SfxApi } from '@/types';
+import { getSettings, useSettings } from '@/store/settingsStore';
+import { PhraseStore, type PhraseParams } from './phrasebook';
+import { WebSpeechEngine, ClipEngine, pickVoice } from './engines';
+import { createVoiceManager, type VoiceManager } from './voiceManager';
+import { SoundEffects } from './sfx';
+import { BASE_PHRASES } from './phrases';
 
-const book: PhraseBook = {};
+const phrases = new PhraseStore();
+phrases.define(BASE_PHRASES);
+
 /** Registra frases por clave (variantes). Usar {name},{color},{n}... como parámetros. */
-export function definePhrases(p: PhraseBook) { Object.assign(book, p); }
-export function phraseText(key: string, params: Record<string, string | number> = {}) {
-  const vs = book[key];
-  if (!vs?.length) return '';
-  const t = vs[Math.floor(Math.random() * vs.length)];
-  return t.replace(/\{(\w+)\}/g, (_, k) => String(params[k] ?? (k === 'name' ? getSettings().game.childName : '')));
+export function definePhrases(p: PhraseBook) { phrases.define(p); }
+export function phraseText(key: string, params: PhraseParams = {}) {
+  return phrases.text(key, params, getSettings().game.childName);
 }
 
-let last: { key: string; params?: Record<string, string | number> } | null = null;
-export const voice: VoiceApi & { unlock(): void } = {
-  async say(key, params, opts?: { priority?: Priority }) {
-    if ((opts?.priority ?? 'instruction') === 'instruction') last = { key, params };
-    const s = getSettings().audio;
-    const text = phraseText(key, params);
-    if (!text || !s.voiceOn || typeof speechSynthesis === 'undefined') return;
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-MX'; u.volume = s.volume; u.rate = s.rate;
-    speechSynthesis.speak(u);
-  },
-  repeatLast() { if (last) void voice.say(last.key, last.params); },
-  stop() { if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel(); },
-  unlock() {},
-};
+const webEngine = new WebSpeechEngine(() => getSettings().audio.voiceURI);
+/** Clips pregrabados (aún sin archivos): si no hay clip, usa la voz del sistema. */
+export const clipEngine = new ClipEngine(() => undefined, webEngine);
 
-export const sfx: SfxApi = { play(_n: SfxName) {} };
+const effects = new SoundEffects(() => getSettings().audio);
+
+let hooked = false;
+const a0 = getSettings().audio;
+const manager: VoiceManager = createVoiceManager({
+  engine: clipEngine, phrases,
+  defaultName: () => getSettings().game.childName,
+  volume: a0.volume, rate: a0.rate, muted: !a0.voiceOn,
+  onUnlock: () => {
+    effects.resume();
+    if (hooked || typeof document === 'undefined') return;
+    hooked = true;
+    // Respaldo: primer pointerdown en captura.
+    const once = () => { voice.unlock(); document.removeEventListener('pointerdown', once, true); };
+    document.addEventListener('pointerdown', once, true);
+  },
+});
+useSettings.subscribe((s) => {
+  manager.setMuted(!s.audio.voiceOn);
+  manager.setVolume(s.audio.volume);
+  manager.setRate(s.audio.rate);
+});
+
+export const voice: VoiceManager = manager;
+export const sfx: SfxApi = effects;
 
 /** Voces en español disponibles (para la zona de adultos). */
 export function listVoices(): SpeechSynthesisVoice[] {
@@ -40,4 +55,7 @@ export function listVoices(): SpeechSynthesisVoice[] {
   return speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith('es'));
 }
 /** Reproduce una frase de prueba con la configuración actual. */
-export function testVoice() { definePhrases({ 'audio.test': ['¡Hola! Así sueno yo'] }); void voice.say('audio.test'); }
+export function testVoice() { void voice.say('audio.test'); }
+
+export { pickVoice, WebSpeechEngine, ClipEngine, createVoiceManager, SoundEffects, PhraseStore };
+export type { VoiceManager };
