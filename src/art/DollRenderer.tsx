@@ -1,7 +1,7 @@
 import { memo, type ReactNode } from 'react';
 import type { DollLook, HairColor, LayerId, WearSlot } from '@/types';
 import { LAYER_Z, MAKEUP_PLACEMENT, makeupZ } from './layers';
-import { Placed, RainbowGrad, makePalette, paletteOf, useIdp, VIEWBOX } from './kit';
+import { Placed, RAINBOW, makePalette, paletteOf, useIdp, VIEWBOX } from './kit';
 import { catalog } from '@/catalog/registry';
 
 export interface DollRendererProps {
@@ -54,7 +54,15 @@ function hairPaint(c: HairColor, id: string) {
         ),
       };
     case 'rainbow':
-      return { fill: `url(#${id})`, palette: makePalette('#9b4dff'), def: <RainbowGrad id={id} /> };
+      // userSpaceOnUse: Back y Front comparten exactamente la misma escala de colores.
+      return {
+        fill: `url(#${id})`, palette: makePalette('#9b4dff'),
+        def: (
+          <linearGradient id={id} gradientUnits="userSpaceOnUse" x1="0" y1="90" x2="0" y2="700">
+            {RAINBOW.map((c, i) => <stop key={c} offset={i / (RAINBOW.length - 1)} stopColor={c} />)}
+          </linearGradient>
+        ),
+      };
   }
 }
 
