@@ -11,7 +11,7 @@ import { ANIMALS, Animal, ColorBlob, FRUITS, Fruit, ShapeToken, type AnimalKind,
 import { makeRng } from '../../kit/rng';
 import './phrases';
 
-/** Elementos visibles antes del hueco. */
+/** Mínimo de elementos visibles antes del hueco (patrones de 3 muestran 5). */
 export const SHOWN = 4;
 const BASIC: ColorName[] = ['rojo', 'azul', 'amarillo', 'verde'];
 const FIG_COLORS: ColorName[] = ['rojo', 'azul', 'amarillo', 'verde', 'naranja', 'morado', 'rosa'];
@@ -79,13 +79,15 @@ export function planPattern(level: number, seed: number): PatternPlan {
     ];
   }
 
-  const offset = rng.int(0, unit.length - 1);
-  const cells = Array.from({ length: SHOWN + 1 }, (_, i) => syms[unit.charCodeAt((i + offset) % unit.length) - 65]);
-  const answer = cells[SHOWN];
+  // Siempre desde el inicio del patrón y con al menos una repetición completa visible
+  // (AB AB → A, AAB AA → B, ABC AB → C): más claro para una niña de 4 años.
+  const shown = Math.max(SHOWN, unit.length * 2 - 1);
+  const cells = Array.from({ length: shown + 1 }, (_, i) => syms[unit.charCodeAt(i % unit.length) - 65]);
+  const answer = cells[shown];
   const want = lvl === 2 || lvl === 3 ? 3 : 2;
   const others = rng.shuffle([...syms.filter((s) => s.id !== answer.id), ...extra]);
   const options = rng.shuffle([answer, ...others.slice(0, want - 1)]);
-  return { kind, unit, visible: cells.slice(0, SHOWN), answer, options };
+  return { kind, unit, visible: cells.slice(0, shown), answer, options };
 }
 
 /** Dibujo de un elemento. `size` es el lado en px; los pequeños de nivel 4 son ~45 %. */

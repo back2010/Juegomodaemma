@@ -24,7 +24,9 @@ describe('pattern-next: plan', () => {
       expect(p.options).toHaveLength(n);
       expect(new Set(p.options.map((o) => o.id)).size).toBe(n);
       expect(p.options.filter((o) => o.id === p.answer.id)).toHaveLength(1);
-      expect(p.visible).toHaveLength(SHOWN);
+      expect(p.visible).toHaveLength(Math.max(SHOWN, p.unit.length * 2 - 1));
+      // empieza al inicio del patrón
+      expect(p.visible[0].id).toBe(p.visible[p.unit.length].id);
     }
   });
 
@@ -34,7 +36,7 @@ describe('pattern-next: plan', () => {
         const p = planPattern(level, s);
         const period = p.unit.length;
         // Con SHOWN >= periodo, el hueco debe repetir el elemento de un periodo antes.
-        expect(p.answer.id).toBe(p.visible[SHOWN - period].id);
+        expect(p.answer.id).toBe(p.visible[p.visible.length - period].id);
         // Cuatro posiciones consecutivas cubren todas las letras de la unidad.
         expect(new Set([...p.visible, p.answer].map((x) => x.id)).size).toBe(new Set(p.unit).size);
       }
