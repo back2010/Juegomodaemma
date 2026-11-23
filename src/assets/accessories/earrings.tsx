@@ -54,8 +54,8 @@ export const earrings: CatalogItem[] = [
     variants: variantsOf('verde', 'morado', 'naranja', 'rosa'), parts: { earrings: EarSquare }, placement: { pair: ['earL', 'earR'] } },
   { id: 'earrings-aros', slot: 'earrings', kind: 'aros', spokenName: 'aros', theme: 'casual', shapeTag: 'circulo', count: 2,
     variants: [variant('dorado', '#f2c230', 'amarillo'), ...variantsOf('rosa', 'azul', 'rojo')],
-    parts: { earrings: EarHoop }, placement: { pair: ['earL', 'earR'] } },
+    parts: { earrings: EarHoop }, placement: { pair: ['earL', 'earR'] }, thumb: [-34, 4, 68, 68] },
   { id: 'earrings-perlas-largas', slot: 'earrings', kind: 'aretes', spokenName: 'aretes de perlas largas', theme: 'fiesta', shapeTag: 'circulo', count: 6,
     variants: [variant('perla', '#f4eee8', 'blanco'), ...variantsOf('rosa', 'azul', 'morado')],
-    parts: { earrings: EarPearlsLong }, placement: { pair: ['earL', 'earR'] } },
+    parts: { earrings: EarPearlsLong }, placement: { pair: ['earL', 'earR'] }, thumb: [-36, 2, 72, 90] },
 ];
