@@ -12,6 +12,9 @@ import { shapeFind } from './activities/shape-find';
 import { shapeShadow } from './activities/shape-shadow';
 import { countObjects } from './activities/count-objects';
 import { numberTap } from './activities/number-tap';
+import { patternNext } from './activities/pattern-next';
+import { sortShape } from './activities/sort-shape';
+import { sortCategory } from './activities/sort-category';
 
 export const activities: ActivityDef[] = [
   // ── Colores ──
@@ -26,10 +29,11 @@ export const activities: ActivityDef[] = [
   // ── Memoria ──
   memoryPairs,
   // ── Patrones ──
-  // pattern-next → aquí
+  patternNext,
   // ── Clasificación ──
   sortColor,
-  // sort-shape, sort-category → aquí
+  sortShape,
+  sortCategory,
 ];
 export const getActivity = (id: string) => activities.find((a) => a.id === id);
 export const activitiesOf = (c: LearningCategory) => activities.filter((a) => a.category === c);

@@ -1,0 +1,18 @@
+/* sort-shape: cajas con contorno guía y objetos arrastrables. */
+.ssh-round { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; }
+.ssh-boxes { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+.ssh-box {
+  position: relative; display: grid; place-items: center; border-style: solid; border-color: #c9a1ff;
+  background: rgba(255, 255, 255, 0.55);
+}
+.ssh-ghost { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.ssh-box-items {
+  position: relative; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-items: center;
+  max-width: 82%;
+}
+.ssh-placed { width: 70px; height: 70px; }
+.ssh-placed svg { width: 100%; height: 100%; }
+.ssh-tray { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; min-height: 150px; }
+.ssh-obj { border-radius: 28px; background: rgba(255, 255, 255, 0.85); padding: 6px; box-shadow: var(--shadow, none); }
+.ssh-icon { gap: 4px; }
+.ssh-icon-box { display: grid; place-items: center; background: #fff; border-radius: 14px; border: 3px solid #c9a1ff; }
