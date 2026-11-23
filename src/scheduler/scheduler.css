@@ -1,0 +1,21 @@
+/* Overlays del scheduler (invitación y actividad). Sin texto: iconos, color y voz. */
+.app > .sched-overlay, .sched-overlay {
+  /* Debajo de la barra superior: el candado de la zona de adultos sigue accesible (cancelar en obligatorio). */
+  position: fixed; inset: var(--topbar) 0 0 0; z-index: 800; display: grid; place-items: center;
+}
+.sched-invite { background: radial-gradient(circle at 50% 40%, #fff8 0 30%, transparent 31%),
+  linear-gradient(135deg, #ffb8e0e6, #d9c2ffe6 55%, #bff3ffe6); backdrop-filter: blur(6px); }
+.sched-card { display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 32px 40px;
+  background: var(--panel); border: 6px solid var(--panel-border); border-radius: 48px; box-shadow: var(--shadow); }
+.sched-hero { width: 200px; height: 200px; display: grid; place-items: center; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--amarillo)); border: 6px solid #fff; box-shadow: var(--shadow-sm);
+  animation: sched-bounce 1.6s var(--ease-bounce) infinite; }
+.sched-hero svg { width: 70%; height: 70%; }
+.sched-actions { display: flex; gap: 48px; align-items: center; }
+.sched-actions .btn.lg { width: 160px; height: 160px; }
+.sched-actions .sched-play { animation: sched-pulse 1.4s ease-in-out infinite; }
+.sched-repeat { position: absolute; top: 24px; right: 24px; }
+.sched-activity { background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c)); }
+.sched-activity > * { width: 100%; height: 100%; }
+@keyframes sched-bounce { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+@keyframes sched-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }

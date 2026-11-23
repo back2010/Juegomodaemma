@@ -14,3 +14,6 @@
 - D11. Miniaturas: ítems 'abs' recortan la muñeca (`SLOT_THUMB`); ítems anclados se dibujan solos en coordenadas locales.
 - D12. Pantalla ▶ inicial en cada carga: desbloquea audio en iPad.
 - D13. Versiones: React 19, Vite 8, TypeScript 5.9, Zustand 5, Vitest 5, Playwright 1.63 (preinstalado).
+- D14. Un lock NO pausa el conteo: solo retrasa la invitación (evita congelar el contador si un lock no se libera).
+- D15. Los overlays del scheduler empiezan bajo la TopBar; durante invitación/actividad la TopBar solo muestra el
+  candado de adultos (para poder cancelar una actividad obligatoria).
